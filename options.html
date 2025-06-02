@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Font Changer Options</title>
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --primary-color-hover: #0056b3;
+            --danger-color: #dc3545;
+            --danger-color-hover: #c82333;
+            --success-color: #28a745;
+            --light-gray: #f8f9fa;
+            --gray: #6c757d;
+            --dark-gray: #343a40;
+            --border-color: #ced4da;
+            --border-radius: 0.3rem;
+            --spacing-unit: 1rem;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            background-color: #fff;
+            color: var(--dark-gray);
+            line-height: 1.6;
+            padding: var(--spacing-unit);
+        }
+
+        .options-container {
+            max-width: 700px;
+            margin: 20px auto;
+            padding: calc(var(--spacing-unit) * 1.5);
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            color: var(--dark-gray);
+            margin-bottom: calc(var(--spacing-unit) * 1.5);
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: calc(var(--spacing-unit) * 2);
+            padding: calc(var(--spacing-unit) * 1.5);
+            background-color: var(--light-gray);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+        }
+
+        .section h2 {
+            font-size: 1.25rem;
+            margin-top: 0;
+            margin-bottom: var(--spacing-unit);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: calc(var(--spacing-unit) * 0.5);
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: calc(var(--spacing-unit) * 0.5);
+        }
+
+        input[type="url"],
+        input[type="text"] {
+            width: 100%;
+            padding: calc(var(--spacing-unit) * 0.6);
+            margin-bottom: var(--spacing-unit);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-sizing: border-box;
+            font-size: 0.95rem;
+        }
+        
+        input[type="url"]:focus,
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+            outline: none;
+        }
+
+        button {
+            padding: calc(var(--spacing-unit) * 0.6) calc(var(--spacing-unit) * 1.2);
+            font-size: 0.95rem;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-color-hover);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        .btn-danger:hover {
+            background-color: var(--danger-color-hover);
+        }
+        
+        .message {
+            padding: calc(var(--spacing-unit) * 0.75);
+            margin-top: var(--spacing-unit);
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            display: none; /* Hidden by default, shown by JS */
+        }
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        #currentFontUrlDisplayArea {
+            margin-top: var(--spacing-unit);
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        #currentFontUrlDisplayArea strong {
+            color: var(--dark-gray);
+            word-break: break-all;
+        }
+
+        #excludedUrlsList {
+            list-style: none;
+            padding-left: 0;
+        }
+        #excludedUrlsList li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: calc(var(--spacing-unit) * 0.5);
+            border-bottom: 1px solid #e9ecef;
+            word-break: break-all;
+        }
+        #excludedUrlsList li:last-child {
+            border-bottom: none;
+        }
+        #excludedUrlsList button { /* Remove button in list */
+            margin-left: var(--spacing-unit);
+            padding: calc(var(--spacing-unit)*0.3) calc(var(--spacing-unit)*0.6);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="options-container">
+        <header>
+            <h1>Custom Font Changer Options</h1>
+        </header>
+
+        <section class="section">
+            <h2>Font URL</h2>
+            <label for="fontUrl">Enter Web Font URL (e.g., a .woff2 or Google Fonts CSS URL):</label>
+            <input type="url" id="fontUrl" placeholder="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+            <button id="saveFontUrl" class="btn-primary">Save Font URL</button>
+            <div id="fontStatus" class="message"></div>
+            <div id="currentFontUrlDisplayArea">Current URL: <strong id="currentFontUrlDisplay">Not set</strong></div>
+        </section>
+
+        <section class="section">
+            <h2>Excluded URLs</h2>
+            <label for="excludedUrl">Enter URL pattern to exclude (e.g., example.com):</label>
+            <input type="text" id="excludedUrl" placeholder="example.com">
+            <button id="addExcludedUrl" class="btn-primary">Add Exclusion</button>
+            <div id="exclusionStatus" class="message"></div>
+            
+            <h3>Current Exclusions:</h3>
+            <ul id="excludedUrlsList">
+                <!-- Exclusion items will be populated here by JavaScript -->
+            </ul>
+        </section>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Custom Font Changer",
+  "version": "1.0",
+  "description": "Applies a user-selected web font to pages and caches it.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "options_page": "options.html",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
